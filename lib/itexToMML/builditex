@@ -1,0 +1,30 @@
+#!/bin/sh
+make
+sudo make install
+make clean
+make universal
+cp itex2MML ../itex-binaries/MacOSX/
+cp itex2MML ../../ectoPlugins/
+cp itex2MML ../../ecto3Plugins/
+make clean
+make ruby
+make test_ruby
+sudo make install_ruby
+make clean
+cd ..
+scp -r itex-src zerbina.ph.utexas.edu:~/
+ssh distler@zerbina.ph.utexas.edu "cd itex-src;make"
+scp zerbina.ph.utexas.edu:itex-src/itex2MML itex-binaries/Linux/
+cd ..
+tar czf ~/Sites/blog/files/itexToMML-$1.tar.gz itexToMML
+rm ~/Sites/blog/files/itexToMML.tar.gz
+ln -s ~/Sites/blog/files/itexToMML-$1.tar.gz ~/Sites/blog/files/itexToMML.tar.gz
+hdiutil create ~/Sites/blog/files/ectoPlugins.dmg -srcfolder ectoPlugins
+hdiutil create ~/Sites/blog/files/ecto3Plugins.dmg -srcfolder ecto3Plugins
+cd ~/Sites/blog/files
+gzip ectoPlugins.dmg
+gzip ecto3Plugins.dmg
+cd ~/src/itexToMML
+cp -R itex-src ~/Sites/code/itexToMML/
+cd ~/Sites/code/itexToMML
+bzr commit

@@ -11,5 +11,4 @@
 # Eval code that you will write as Ruby
 
 # The code that will render your posts (by default, maruku with erb)
-:parsing_code: "::Sinatra::Erb.erb(variables.content)"
-
+:parsing_code: :maruku 

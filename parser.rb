@@ -1,27 +1,7 @@
 require 'blog.rb'
 disable :run
-    include Sinatra::RenderingHelpers
-    include Sinatra::Erb
-  def tex(string = nil, &block)
-    Ritex::Parser.new.parse((string ? string : block.call))
-  end
-  def code(language, string = nil, &block)
-    code = Uv.parse( (string ? string : capture(&block)),
-                    "xhtml",
-                    language,
-                    false,
-                    Blog.code_theme
-                  )
-    result = ""
-    code.sub('>', ">\n").gsub('pre', 'ol').each_line do |l|
-      l = "<li>#{l}" if l !~ /<.?ol/
-      result << "#{l}</li>" if l !~ /<.+ol/
-    end
-    "<pre><code>#{result.gsub("\n", '')}</ol></code></pre>"
-  end
-  def capture(&block)
-    block.call
-  end
+Parsers = OpenStruct.new
+Dir.glob('plugins/**/*.parser.rb').each {|r| require(r)} 
 # Model
 class Post
   public
@@ -30,8 +10,13 @@ class Post
   # of the two arguments (Ostruct), updates the tag and the
   # category list (with the same Struct) and saves it
   def parse(variables)
+    variables.content = if variables.filter
+      variables.filter.each {|f| eval(Parsers.send(f))}
+    else
+      eval Parsers.send(Blog.parsing_code)
+    end
     maybe = self.update_attributes :name    => variables.name,
-                                   :content => eval(Blog.parsing_code)
+                                   :content => variables.content
     record = maybe == true ? self : maybe
     record.tags      = variables.tags
     record.categories = variables.categories

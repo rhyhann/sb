@@ -1,6 +1,5 @@
 - if defined?(@posts)
   - for post in @posts
-    = post
     %h1= link_slug(post.name, post.slug)
     %p=  post.content
     = Plugins::Views.posts_element_foot

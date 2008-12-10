@@ -1,0 +1,23 @@
+--- itex2MML.y.orig	2008-04-10 12:33:49.000000000 +0800
++++ itex2MML.y	2008-04-10 13:11:48.000000000 +0800
+@@ -1215,7 +1215,19 @@
+   itex2MML_free_string($2);
+ };
+ 
+-msqrt: SQRT closedTerm {
++msqrt: SQRT "[" closedTerm "]" closedTerm {
++  if ($2[0] == '[' && $4[0] == ']')
++  {
++    char * s1 = itex2MML_copy3("<mroot>", $5, $3);
++    $$ = itex2MML_copy2(s1, "</mroot>");
++    itex2MML_free_string(s1);
++  }
++  itex2MML_free_string($2);
++  itex2MML_free_string($3);
++  itex2MML_free_string($4);
++  itex2MML_free_string($5);
++}
++| SQRT closedTerm {
+   $$ = itex2MML_copy3("<msqrt>", $2, "</msqrt>");
+   itex2MML_free_string($2);
+ };
