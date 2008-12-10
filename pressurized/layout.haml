@@ -1,0 +1,41 @@
+!!! Strict
+/
+  Design by Free CSS Templates
+  http://www.freecsstemplates.org
+  Released for free under a Creative Commons Attribution 2.5 License
+  Name       : Pressurized
+  Description: A two-column, fixed-width design with dark color scheme.
+  Version    : 1.0
+  Released   : 20081103
+%html{ :xmlns => "http://www.w3.org/1999/xhtml" }
+  %head
+    %meta{ :name => "keywords", :content => "" }/
+    %meta{ :name => "description", :content => "" }/
+    %meta{ :content => "text/html; charset=utf-8", "http-equiv" => "content-type" }/
+    %title= Blog.title
+    %link{ :href => "/style.css", :rel => "stylesheet", :media => "screen", :type => "text/css" }/
+    %link{ :href => "/css/spacecadet.css", :rel => "stylesheet", :media => "screen", :type => "text/css" }/
+    = Plugins::Views.head
+  %body
+    #wrapper
+      #header
+        #logo
+          %h1= link_to Blog.title, '/'
+          %p= Blog.subtitle
+      #menu
+        %ul
+          - Post.elements(:tags).each do |tag|
+            %li= tag
+          = Plugins::Views.menu
+      #page
+        #content
+          = yield
+        #sidebar
+          = Plugins::Views.sidebar
+        %div{ :style => "clear: both;" } &nbsp;
+      #footer
+        %p
+          Copyright (c) 2008 Sitename.com. All rights reserved. Design by
+          %a{ :href => "http://www.freecsstemplates.org/" } Free CSS Templates
+          = Plugins::Views.foot_content
+    = Plugins::Views.foot

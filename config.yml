@@ -1,0 +1,15 @@
+:title:       My fancy blog!
+:subtitle:    Some catchy subtitle
+:post_prefix: :post
+:posts_dir:   :posts
+:per_page:    20
+:theme:       :pressurized
+:code_theme:  :spacecadet
+:engine:      :haml
+:tracking_code:  :track_code
+
+# Eval code that you will write as Ruby
+
+# The code that will render your posts (by default, maruku with erb)
+:parsing_code: "::Sinatra::Erb.erb(variables.content)"
+
