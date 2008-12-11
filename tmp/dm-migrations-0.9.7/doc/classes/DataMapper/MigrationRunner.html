@@ -1,0 +1,276 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Module: DataMapper::MigrationRunner [RDoc Documentation]</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }<\/style>" )
+
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Module</strong></td>
+          <td class="class-name-in-header">DataMapper::MigrationRunner</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+
+
+                <a href="../../files/lib/migration_runner_rb.html">
+
+                lib/migration_runner.rb
+
+                </a>
+
+
+        <br />
+
+            </td>
+        </tr>
+
+
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+  <div id="contextContent">
+
+   </div>
+
+
+    <div id="method-list">
+      <h3 class="section-bar">Methods</h3>
+
+      <div class="name-list">
+
+        <a href="#M000005">migrate_down!</a>&nbsp;&nbsp;
+
+        <a href="#M000004">migrate_up!</a>&nbsp;&nbsp;
+
+        <a href="#M000003">migration</a>&nbsp;&nbsp;
+
+        <a href="#M000006">migrations</a>&nbsp;&nbsp;
+
+      </div>
+    </div>
+
+  </div>
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+
+
+    <!-- if method_list -->
+
+    <div id="methods">
+
+      <h3 class="section-bar">Public Instance methods</h3>
+
+
+      <div id="method-M000005" class="method-detail">
+        <a name="M000005"></a>
+
+        <div class="method-heading">
+
+          <a href="MigrationRunner.src/M000005.html" target="Code" class="method-signature"
+            onclick="popupCode('MigrationRunner.src/M000005.html');return false;">
+
+          <span class="method-name">migrate_down!</span><span class="method-args">(level = nil)</span>
+
+          </a>
+
+        </div>
+
+        <div class="method-description">
+
+          <p>
+Run all the down steps for the migrations that have already been run.
+</p>
+<p>
+has an optional argument &#8216;level&#8217; which, if supplied, only
+performs the down migrations with a postion greater than the level.
+</p>
+
+        </div>
+      </div>
+
+
+      <div id="method-M000004" class="method-detail">
+        <a name="M000004"></a>
+
+        <div class="method-heading">
+
+          <a href="MigrationRunner.src/M000004.html" target="Code" class="method-signature"
+            onclick="popupCode('MigrationRunner.src/M000004.html');return false;">
+
+          <span class="method-name">migrate_up!</span><span class="method-args">(level = nil)</span>
+
+          </a>
+
+        </div>
+
+        <div class="method-description">
+
+          <p>
+Run all migrations that need to be run. In most cases, this would be called
+by a rake task as part of a larger project, but this provides the ability
+to run them in a script or test.
+</p>
+<p>
+has an optional argument &#8216;level&#8217; which if supplied, only
+performs the migrations with a position less than or equal to the level.
+</p>
+
+        </div>
+      </div>
+
+
+      <div id="method-M000003" class="method-detail">
+        <a name="M000003"></a>
+
+        <div class="method-heading">
+
+          <a href="MigrationRunner.src/M000003.html" target="Code" class="method-signature"
+            onclick="popupCode('MigrationRunner.src/M000003.html');return false;">
+
+          <span class="method-name">migration</span><span class="method-args">( number, name, opts = {}, &amp;block )</span>
+
+          </a>
+
+        </div>
+
+        <div class="method-description">
+
+          <p>
+Creates a new migration, and adds it to the list of migrations to be run.
+Migrations can be defined in any order, they will be sorted and run in the
+correct order.
+</p>
+<p>
+The order that migrations are run in is set by the first argument. It is
+not neccessary that this be unique; migrations with the same version number
+are expected to be able to be run in any order.
+</p>
+<p>
+The second argument is the name of the migration. This name is used
+internally to track if the migration has been run. It is required that this
+name be unique across all migrations.
+</p>
+<p>
+Addtionally, it accepts a number of options:
+</p>
+<ul>
+<li><tt>:database</tt> If you defined several DataMapper::database instances
+use this to choose which one to run the migration gagainst. Defaults to
+<tt>:default</tt>. Migrations are tracked individually per database.
+
+</li>
+<li><tt>:verbose</tt> true/false, defaults to true. Determines if the migration
+should output its status messages when it runs.
+
+</li>
+</ul>
+<p>
+Example of a simple migration:
+</p>
+<pre>
+  migration( 1, :create_people_table ) do
+    up do
+      create_table :people do
+        column :id,     Integer, :serial =&gt; true
+        column :name,   String, :size =&gt; 50
+        column :age,    Integer
+      end
+    end
+    down do
+      drop_table :people
+    end
+  end
+</pre>
+<p>
+Its recommended that you stick with raw <a href="../SQL.html">SQL</a> for
+migrations that manipulate data. If you write a migration using a model,
+then later change the model, there&#8217;s a possibility the migration will
+no longer work. Using <a href="../SQL.html">SQL</a> will always work.
+</p>
+
+        </div>
+      </div>
+
+
+      <div id="method-M000006" class="method-detail">
+        <a name="M000006"></a>
+
+        <div class="method-heading">
+
+          <a href="MigrationRunner.src/M000006.html" target="Code" class="method-signature"
+            onclick="popupCode('MigrationRunner.src/M000006.html');return false;">
+
+          <span class="method-name">migrations</span><span class="method-args">()</span>
+
+          </a>
+
+        </div>
+
+        <div class="method-description">
+
+        </div>
+      </div>
+
+
+
+    </div>
+
+
+
+
+  </div>
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

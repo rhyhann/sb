@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>query_column_constraints (SQL::Postgresql::Table)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/sql/postgresql.rb, line 46</span>
+      <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">query_column_constraints</span>
+        <span class="ruby-ivar">@adapter</span>.<span class="ruby-identifier">query</span>(
+          <span class="ruby-node">&quot;SELECT * FROM information_schema.table_constraints WHERE table_name='#{@name}' AND table_schema=current_schema()&quot;</span>
+        ).<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">table_constraint</span><span class="ruby-operator">|</span>
+          <span class="ruby-ivar">@adapter</span>.<span class="ruby-identifier">query</span>(
+            <span class="ruby-node">&quot;SELECT * FROM information_schema.constraint_column_usage WHERE constraint_name='#{table_constraint.constraint_name}' AND table_schema=current_schema()&quot;</span>
+          ).<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">constrained_column</span><span class="ruby-operator">|</span>
+            <span class="ruby-ivar">@columns</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">column</span><span class="ruby-operator">|</span>
+              <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">column</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">constrained_column</span>.<span class="ruby-identifier">column_name</span>
+                <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">table_constraint</span>.<span class="ruby-identifier">constraint_type</span>
+                <span class="ruby-keyword kw">when</span> <span class="ruby-value str">&quot;UNIQUE&quot;</span>       <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">column</span>.<span class="ruby-identifier">unique</span> = <span class="ruby-keyword kw">true</span>
+                <span class="ruby-keyword kw">when</span> <span class="ruby-value str">&quot;PRIMARY KEY&quot;</span>  <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">column</span>.<span class="ruby-identifier">primary_key</span> = <span class="ruby-keyword kw">true</span>
+                <span class="ruby-keyword kw">end</span>
+              <span class="ruby-keyword kw">end</span>
+            <span class="ruby-keyword kw">end</span>
+          <span class="ruby-keyword kw">end</span>
+        <span class="ruby-keyword kw">end</span>
+
+      <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

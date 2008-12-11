@@ -1,0 +1,346 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Class: SQL::TableModifier [RDoc Documentation]</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }<\/style>" )
+
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Class</strong></td>
+          <td class="class-name-in-header">SQL::TableModifier</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+
+
+                <a href="../../files/lib/sql/table_modifier_rb.html">
+
+                lib/sql/table_modifier.rb
+
+                </a>
+
+
+        <br />
+
+            </td>
+        </tr>
+
+
+        <tr class="top-aligned-row">
+            <td><strong>Parent:</strong></td>
+            <td>
+
+                Object
+
+            </td>
+        </tr>
+
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+  <div id="contextContent">
+
+   </div>
+
+
+    <div id="method-list">
+      <h3 class="section-bar">Methods</h3>
+
+      <div class="name-list">
+
+        <a href="#M000057">add_column</a>&nbsp;&nbsp;
+
+        <a href="#M000061">change_column</a>&nbsp;&nbsp;
+
+        <a href="#M000058">drop_column</a>&nbsp;&nbsp;
+
+        <a href="#M000059">drop_columns</a>&nbsp;&nbsp;
+
+        <a href="#M000056">new</a>&nbsp;&nbsp;
+
+        <a href="#M000062">quote_column_name</a>&nbsp;&nbsp;
+
+        <a href="#M000063">quoted_table_name</a>&nbsp;&nbsp;
+
+        <a href="#M000060">rename_column</a>&nbsp;&nbsp;
+
+      </div>
+    </div>
+
+  </div>
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+
+    <div id="attribute-list">
+      <h3 class="section-bar">Attributes</h3>
+
+      <div class="name-list">
+        <table>
+
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">adapter</td>
+
+          <td class="context-item-value">&nbsp;[RW]&nbsp;</td>
+
+          <td class="context-item-desc"></td>
+        </tr>
+
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">opts</td>
+
+          <td class="context-item-value">&nbsp;[RW]&nbsp;</td>
+
+          <td class="context-item-desc"></td>
+        </tr>
+
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">statements</td>
+
+          <td class="context-item-value">&nbsp;[RW]&nbsp;</td>
+
+          <td class="context-item-desc"></td>
+        </tr>
+
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">table_name</td>
+
+          <td class="context-item-value">&nbsp;[RW]&nbsp;</td>
+
+          <td class="context-item-desc"></td>
+        </tr>
+
+        </table>
+      </div>
+    </div>
+
+
+    <!-- if method_list -->
+
+    <div id="methods">
+
+      <h3 class="section-bar">Public Class methods</h3>
+
+
+      <div id="method-M000056" class="method-detail">
+        <a name="M000056"></a>
+
+        <div class="method-heading">
+
+          <a href="TableModifier.src/M000056.html" target="Code" class="method-signature"
+            onclick="popupCode('TableModifier.src/M000056.html');return false;">
+
+          <span class="method-name">new</span><span class="method-args">(adapter, table_name, opts = {}, &amp;block)</span>
+
+          </a>
+
+        </div>
+
+        <div class="method-description">
+
+        </div>
+      </div>
+
+
+      <h3 class="section-bar">Public Instance methods</h3>
+
+
+      <div id="method-M000057" class="method-detail">
+        <a name="M000057"></a>
+
+        <div class="method-heading">
+
+          <a href="TableModifier.src/M000057.html" target="Code" class="method-signature"
+            onclick="popupCode('TableModifier.src/M000057.html');return false;">
+
+          <span class="method-name">add_column</span><span class="method-args">(name, type, opts = {})</span>
+
+          </a>
+
+        </div>
+
+        <div class="method-description">
+
+        </div>
+      </div>
+
+
+      <div id="method-M000061" class="method-detail">
+        <a name="M000061"></a>
+
+        <div class="method-heading">
+
+          <a href="TableModifier.src/M000061.html" target="Code" class="method-signature"
+            onclick="popupCode('TableModifier.src/M000061.html');return false;">
+
+          <span class="method-name">change_column</span><span class="method-args">(name, type, opts = {})</span>
+
+          </a>
+
+        </div>
+
+        <div class="method-description">
+
+        </div>
+      </div>
+
+
+      <div id="method-M000058" class="method-detail">
+        <a name="M000058"></a>
+
+        <div class="method-heading">
+
+          <a href="TableModifier.src/M000058.html" target="Code" class="method-signature"
+            onclick="popupCode('TableModifier.src/M000058.html');return false;">
+
+          <span class="method-name">drop_column</span><span class="method-args">(name)</span>
+
+          </a>
+
+        </div>
+
+        <div class="method-description">
+
+        </div>
+      </div>
+
+
+      <div id="method-M000059" class="method-detail">
+        <a name="M000059"></a>
+
+        <div class="method-heading">
+
+          <span class="method-name">drop_columns</span><span class="method-args">(name)</span>
+
+        </div>
+
+        <div class="method-description">
+
+          <p>
+Alias for <a href="TableModifier.html#M000058">drop_column</a>
+</p>
+
+        </div>
+      </div>
+
+
+      <div id="method-M000062" class="method-detail">
+        <a name="M000062"></a>
+
+        <div class="method-heading">
+
+          <a href="TableModifier.src/M000062.html" target="Code" class="method-signature"
+            onclick="popupCode('TableModifier.src/M000062.html');return false;">
+
+          <span class="method-name">quote_column_name</span><span class="method-args">(name)</span>
+
+          </a>
+
+        </div>
+
+        <div class="method-description">
+
+        </div>
+      </div>
+
+
+      <div id="method-M000063" class="method-detail">
+        <a name="M000063"></a>
+
+        <div class="method-heading">
+
+          <a href="TableModifier.src/M000063.html" target="Code" class="method-signature"
+            onclick="popupCode('TableModifier.src/M000063.html');return false;">
+
+          <span class="method-name">quoted_table_name</span><span class="method-args">()</span>
+
+          </a>
+
+        </div>
+
+        <div class="method-description">
+
+        </div>
+      </div>
+
+
+      <div id="method-M000060" class="method-detail">
+        <a name="M000060"></a>
+
+        <div class="method-heading">
+
+          <a href="TableModifier.src/M000060.html" target="Code" class="method-signature"
+            onclick="popupCode('TableModifier.src/M000060.html');return false;">
+
+          <span class="method-name">rename_column</span><span class="method-args">(name, new_name, opts = {})</span>
+
+          </a>
+
+        </div>
+
+        <div class="method-description">
+
+        </div>
+      </div>
+
+
+
+    </div>
+
+
+
+
+  </div>
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

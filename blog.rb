@@ -8,7 +8,6 @@
             dm-validations
   ).each {|n| require(n)}
 Dir.glob('lib/**/*.rb').each {|lib| require(lib)}
-Dir.glob('plugins/**/*.plugin.rb').each {|plugin| require(plugin)}
 configure do
   DataMapper.setup(:default, "sqlite3:///#{Dir.pwd}/db.sqlite3")
   Blog = OpenStruct.new YAML.load_file 'config.yml'
@@ -29,15 +28,15 @@ class Post
   property :name   ,String,:nullable => false,:unique => true,:key => true
   property :content,Text  ,:nullable => false
   property :slug      ,Slug
-  property :tags      ,TagCollection
-  property :categories,TagCollection
+#  property :tags      ,TagCollection
+#  property :categories,TagCollection
   is_paginated
-  before :save do
-    attribute_set(:slug, @name)
-  end
-  def self.elements(type, el = Set.new)
-    all.each {|r| el.merge(r.send(type))}; el
-  end
+#  before :save do
+#    attribute_set(:slug, @name)
+#  end
+#  def self.elements(type, el = Set.new)
+#    all.each {|r| el.merge(r.send(type))}; el
+#  end
 end
 
 # Controller
@@ -47,13 +46,14 @@ def load_posts(page = 1, type = nil, tag = nil)
 					  :per_page => Blog.per_page
 end
 
+get('/') { redirect('/1') }
 
-get '/*' do
-  load_posts(params[:splat][0])
-  send(Blog.engine, :posts)
-end
 get '/*/*/:page' do
   load_posts(params[:page], *params[:splat])
+  send(Blog.engine, :posts)
+end
+get '/:page' do
+  load_posts(params[:page])
   send(Blog.engine, :posts)
 end
 
@@ -82,3 +82,4 @@ helpers do
 
 end
 
+Dir.glob('plugins/**/*.plugin.rb').each {|plugin| require(plugin)}

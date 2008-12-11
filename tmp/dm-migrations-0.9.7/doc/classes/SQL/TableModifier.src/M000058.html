@@ -1,0 +1,23 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>drop_column (SQL::TableModifier)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/sql/table_modifier.rb, line 20</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">drop_column</span>(<span class="ruby-identifier">name</span>)
+      <span class="ruby-comment cmt"># raise NotImplemented for SQLite3. Can't ALTER TABLE, need to copy table.</span>
+      <span class="ruby-comment cmt"># We'd have to inspect it, and we can't, since we aren't executing any queries yet.</span>
+      <span class="ruby-comment cmt"># TODO instead of building the SQL queries when executing the block, create AddColumn,</span>
+      <span class="ruby-comment cmt"># AlterColumn and DropColumn objects that get #to_sql'd</span>
+      <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">name</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Array</span>)
+        <span class="ruby-identifier">name</span>.<span class="ruby-identifier">each</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">n</span><span class="ruby-operator">|</span> <span class="ruby-identifier">drop_column</span>(<span class="ruby-identifier">n</span>) }
+      <span class="ruby-keyword kw">else</span>
+        <span class="ruby-ivar">@statements</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;ALTER TABLE #{quoted_table_name} DROP COLUMN #{quote_column_name(name)}&quot;</span>
+      <span class="ruby-keyword kw">end</span>
+    <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

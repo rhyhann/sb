@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>load_driver (spec/spec_helper.rb)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File spec/spec_helper.rb, line 9</span>
+<span class="ruby-keyword kw">def</span> <span class="ruby-identifier">load_driver</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">default_uri</span>)
+
+  <span class="ruby-identifier">lib</span> = <span class="ruby-node">&quot;do_#{name}&quot;</span>
+  <span class="ruby-keyword kw">begin</span>
+    <span class="ruby-identifier">gem</span> <span class="ruby-identifier">lib</span>, <span class="ruby-value str">'~&gt;0.9.7'</span>
+    <span class="ruby-identifier">require</span> <span class="ruby-identifier">lib</span>
+    <span class="ruby-constant">DataMapper</span>.<span class="ruby-identifier">setup</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">default_uri</span>)
+    <span class="ruby-constant">DataMapper</span><span class="ruby-operator">::</span><span class="ruby-constant">Repository</span>.<span class="ruby-identifier">adapters</span>[<span class="ruby-identifier">:default</span>] =  <span class="ruby-constant">DataMapper</span><span class="ruby-operator">::</span><span class="ruby-constant">Repository</span>.<span class="ruby-identifier">adapters</span>[<span class="ruby-identifier">name</span>]
+    <span class="ruby-constant">ADAPTERS</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">name</span>
+    <span class="ruby-keyword kw">true</span>
+  <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">Gem</span><span class="ruby-operator">::</span><span class="ruby-constant">LoadError</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+    <span class="ruby-identifier">warn</span> <span class="ruby-node">&quot;dm-migrations specs will not be run against #{name} - Could not load #{lib}: #{e}.&quot;</span>
+    <span class="ruby-keyword kw">false</span>
+  <span class="ruby-keyword kw">end</span>
+<span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>build_type (SQL::TableCreator::Column)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/sql/table_creator.rb, line 58</span>
+      <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">build_type</span>(<span class="ruby-identifier">type_class</span>)
+        <span class="ruby-identifier">schema</span> = {<span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@name</span>, <span class="ruby-identifier">:quote_column_name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">quoted_name</span>}.<span class="ruby-identifier">merge</span>(<span class="ruby-ivar">@opts</span>)
+        <span class="ruby-identifier">schema</span>[<span class="ruby-identifier">:serial?</span>] <span class="ruby-operator">||=</span> <span class="ruby-identifier">schema</span>[<span class="ruby-identifier">:serial</span>]
+        <span class="ruby-identifier">schema</span>[<span class="ruby-identifier">:nullable?</span>] <span class="ruby-operator">||=</span> <span class="ruby-identifier">schema</span>[<span class="ruby-identifier">:nullable</span>] <span class="ruby-operator">||</span> <span class="ruby-operator">!</span><span class="ruby-identifier">schema</span>[<span class="ruby-identifier">:not_null</span>]
+        <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">type_class</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">String</span>)
+          <span class="ruby-identifier">schema</span>[<span class="ruby-identifier">:primitive</span>] = <span class="ruby-identifier">type_class</span>
+        <span class="ruby-keyword kw">else</span>
+          <span class="ruby-identifier">schema</span> = <span class="ruby-ivar">@adapter</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">type_map</span>[<span class="ruby-identifier">type_class</span>].<span class="ruby-identifier">merge</span>(<span class="ruby-identifier">schema</span>)
+        <span class="ruby-keyword kw">end</span>
+        <span class="ruby-ivar">@adapter</span>.<span class="ruby-identifier">property_schema_statement</span>(<span class="ruby-identifier">schema</span>)
+      <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

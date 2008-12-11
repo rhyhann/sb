@@ -1,0 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>update_migration_info (DataMapper::Migration)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/migration.rb, line 150</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">update_migration_info</span>(<span class="ruby-identifier">direction</span>)
+      <span class="ruby-identifier">save</span>, <span class="ruby-ivar">@verbose</span> = <span class="ruby-ivar">@verbose</span>, <span class="ruby-keyword kw">false</span>
+
+      <span class="ruby-identifier">create_migration_info_table_if_needed</span>
+
+      <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">direction</span>.<span class="ruby-identifier">to_sym</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">:up</span>
+        <span class="ruby-identifier">execute</span>(<span class="ruby-node">&quot;INSERT INTO #{migration_info_table} (#{migration_name_column}) VALUES (#{quoted_name})&quot;</span>)
+      <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">direction</span>.<span class="ruby-identifier">to_sym</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">:down</span>
+        <span class="ruby-identifier">execute</span>(<span class="ruby-node">&quot;DELETE FROM #{migration_info_table} WHERE #{migration_name_column} = #{quoted_name}&quot;</span>)
+      <span class="ruby-keyword kw">end</span>
+      <span class="ruby-ivar">@verbose</span> = <span class="ruby-identifier">save</span>
+    <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

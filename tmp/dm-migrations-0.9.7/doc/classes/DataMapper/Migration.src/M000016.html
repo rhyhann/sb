@@ -1,0 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>create_index (DataMapper::Migration)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/migration.rb, line 103</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create_index</span>(<span class="ruby-identifier">table_name</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">columns_and_options</span>)
+      <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">columns_and_options</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Hash</span>)
+        <span class="ruby-identifier">opts</span> = <span class="ruby-identifier">columns_and_options</span>.<span class="ruby-identifier">pop</span>
+      <span class="ruby-keyword kw">else</span>
+        <span class="ruby-identifier">opts</span> = {}
+      <span class="ruby-keyword kw">end</span>
+      <span class="ruby-identifier">columns</span> = <span class="ruby-identifier">columns_and_options</span>.<span class="ruby-identifier">flatten</span>
+
+      <span class="ruby-identifier">opts</span>[<span class="ruby-identifier">:name</span>] <span class="ruby-operator">||=</span> <span class="ruby-node">&quot;#{opts[:unique] ? 'unique_' : ''}index_#{table_name}_#{columns.join('_')}&quot;</span>
+
+      <span class="ruby-identifier">execute</span> <span class="ruby-value str">&quot;CREATE \#{opts[:unique] ? 'UNIQUE ' : '' }INDEX \#{quote_column_name(opts[:name])} ON\n\#{quote_table_name(table_name)} (\#{columns.map { |c| quote_column_name(c) }.join(', ') })\n&quot;</span>.<span class="ruby-identifier">compress_lines</span>
+    <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

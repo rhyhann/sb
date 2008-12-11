@@ -1,0 +1,19 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>say_with_time (DataMapper::Migration)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/migration.rb, line 136</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">say_with_time</span>(<span class="ruby-identifier">message</span>, <span class="ruby-identifier">indent</span> = <span class="ruby-value">2</span>)
+      <span class="ruby-identifier">say</span>(<span class="ruby-identifier">message</span>, <span class="ruby-identifier">indent</span>)
+      <span class="ruby-identifier">result</span> = <span class="ruby-keyword kw">nil</span>
+      <span class="ruby-identifier">time</span> = <span class="ruby-constant">Benchmark</span>.<span class="ruby-identifier">measure</span> { <span class="ruby-identifier">result</span> = <span class="ruby-keyword kw">yield</span> }
+      <span class="ruby-identifier">say</span>(<span class="ruby-value str">&quot;-&gt; %.4fs&quot;</span> <span class="ruby-operator">%</span> <span class="ruby-identifier">time</span>.<span class="ruby-identifier">real</span>, <span class="ruby-identifier">indent</span>)
+      <span class="ruby-identifier">result</span>
+    <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

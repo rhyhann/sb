@@ -1,0 +1,16 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>migration_record (DataMapper::Migration)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/migration.rb, line 181</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">migration_record</span>
+      <span class="ruby-keyword kw">return</span> [] <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">migration_info_table_exists?</span>
+      <span class="ruby-ivar">@adapter</span>.<span class="ruby-identifier">query</span>(<span class="ruby-node">&quot;SELECT #{migration_name_column} FROM #{migration_info_table} WHERE #{migration_name_column} = #{quoted_name}&quot;</span>)
+    <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>
