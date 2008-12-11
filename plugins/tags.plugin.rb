@@ -1,9 +1,7 @@
 require 'dm-migrations'
 require 'migration_runner'
-configure do
-  Post.auto_migrate!  
-end
-DataMapper::MigrationRunner.migration 1, :auto_migrate do
+
+DataMapper::MigrationRunner.migration 1, :add_tags do
   up do
     add_column :categories,TagCollection
     add_column :tags      ,TagCollection
@@ -14,9 +12,6 @@ DataMapper::MigrationRunner.migration 1, :auto_migrate do
   end
 end
 class Post
-  before :save do
-    attribute_set(:slug, @name)
-  end
   def self.elements(type)
     elements = Array.new
     all.each {|r| elements.merge(r.send(type))}
@@ -25,13 +20,16 @@ class Post
 end
 
 include Sinatra::RenderingHelpers
-include Sinatra::Haml
+include Sinatra::Erb
 
 template :thing do 
-  <<-HAML
-- for category in Post.elements(:tags)
-  %li= category
+<<-HAML
+<% for category in Post.elements(:tags) %>
+  <li><%= category %></li>
+<% end %>
 HAML
 end
-Plugins::Views.menu ||= Sinatra::Haml.haml(:thing)
-
+Plugins::Views.menu ||= erb(:thing)
+configure do
+  Post.add_tags!
+end

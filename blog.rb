@@ -31,9 +31,9 @@ class Post
 #  property :tags      ,TagCollection
 #  property :categories,TagCollection
   is_paginated
-#  before :save do
-#    attribute_set(:slug, @name)
-#  end
+  before :save do
+    attribute_set(:slug, @name)
+  end
 #  def self.elements(type, el = Set.new)
 #    all.each {|r| el.merge(r.send(type))}; el
 #  end
