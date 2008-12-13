@@ -1,5 +1,6 @@
 require 'rubygems'
-require 'spec'
+gem 'rspec', '<=1.1.9'
+$:.unshift File.dirname(__FILE__) + '/sinatra/lib'
 require 'sinatra'
 require 'sinatra/test/rspec'
 require 'blog.rb'
@@ -29,14 +30,14 @@ describe "Controller" do
   end
   it "is loading pages" do
     get_it '/1'
-    [@posts_count, @posts].should == Post.paged(1)
+    [@posts_count, @posts].should == Post.paginated(1)
   end
   it "is loading a post" do
     get_it "/#{Blog.post_prefix}/1-bar"
     @response.should be_ok
   end
 end
-describe "View", do
+describe "View" do
   it "should show the blog title" do
     get_it '/'
     @response.title.should == Blog.title

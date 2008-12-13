@@ -1,25 +1,36 @@
+$:.unshift File.dirname(__FILE__) + '/sinatra/lib'
 # Generations
 %w(
-   rubygems dm-core
-   sinatra  dm-aggregates
+   sinatra  rubygems dm-core
+            dm-aggregates
    yaml     dm-is-paginated
    ostruct  dm-types
             dm-tags
             dm-validations
   ).each {|n| require(n)}
-Dir.glob('lib/**/*.rb').each {|lib| require(lib)}
+
 configure do
   DataMapper.setup(:default, "sqlite3:///#{Dir.pwd}/db.sqlite3")
   Blog = OpenStruct.new YAML.load_file 'config.yml'
-  DataMapper.auto_migrate!
+  DataMapper.auto_upgrade!
   set :views  => "#{Dir.pwd}/#{Blog.theme}",
       :public => "#{Dir.pwd}/#{Blog.theme}/public"
   # Plugins
   module Plugins
     Views = OpenStruct.new
+    @@added_strings = []
+    def self.Views_add(type,string)
+      unless @@added_strings.include?(string)
+	eval "Views.#{type} = '' if Views.#{type}.nil?"
+        eval "Views.#{type} << string"
+        @@added_strings << string
+      end
+    end
+    def self.activate(type)
+      Dir.glob("plugins/**/*." + type + ".rb").each {|l| load(l)}
+    end
   end
 end
-
 # Model
 
 class Post
@@ -28,35 +39,34 @@ class Post
   property :name   ,String,:nullable => false,:unique => true,:key => true
   property :content,Text  ,:nullable => false
   property :slug      ,Slug
-#  property :tags      ,TagCollection
-#  property :categories,TagCollection
   is_paginated
   before :save do
     attribute_set(:slug, @name)
   end
-#  def self.elements(type, el = Set.new)
-#    all.each {|r| el.merge(r.send(type))}; el
-#  end
 end
 
-# Controller
+# Methods
 def load_posts(page = 1, type = nil, tag = nil)
   @posts = type.nil? ? Post.all : Post.all(type.to_sym.like => "%#{tag}%")
   @posts_count, @posts = @posts.paginated :page     => (page.empty? ? 1 : page.to_i),
 					  :per_page => Blog.per_page
 end
-
-get('/') { redirect('/1') }
-
-get '/*/*/:page' do
-  load_posts(params[:page], *params[:splat])
-  send(Blog.engine, :posts)
+not_found do
+  redirect "#{request.env['PATH_INFO']}/" if request.env['PATH_INFO'][-1] != 47
+  redirect "#{request.env['PATH_INFO']}1" if request.env['PATH_INFO'][-1] == 47
 end
+## Root
 get '/:page' do
   load_posts(params[:page])
   send(Blog.engine, :posts)
 end
+## Categories/Tags
+get '/*/*/:page' do
+  load_posts(params[:page], *params[:splat])
+  send(Blog.engine, :posts)
+end
 
+# Post
 get "/#{Blog.post_prefix}/:post" do
   @post = Post.first(:slug => params[:post])
   send(Blog.engine, :posts)
@@ -81,5 +91,4 @@ helpers do
   end
 
 end
-
-Dir.glob('plugins/**/*.plugin.rb').each {|plugin| require(plugin)}
+Plugins.activate 'plugin'

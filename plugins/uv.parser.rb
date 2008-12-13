@@ -28,9 +28,13 @@ MaRuKu::In::Markdown::register_block_extension(
                     Blog.code_theme
     result = ""
     code.sub('>', ">\n").each_line do |l|
-      l = "<li>#{l}" if l !~ /<.?pre/
-      result << "#{l}</li>" if l !~ /<.?pre/
+      l = "\n<li>#{l}" if l !~ /<.?pre/
+      result << "#{l}</li>\n" if l !~ /<.?pre/
     end
-    "<pre><code><ol class='spacecadet'>#{result.gsub("\n", '')}</ol></code></pre>"
+    "<ol class='spacecadet'>
+  <code>
+    <pre>#{result.gsub("\n", '')}</pre>
+  </code>
+</ol>"
   end
 Parsers.maruku = "Maruku.new(variables.content).to_html"

@@ -15,6 +15,10 @@
     %title= Blog.title
     %link{ :href => "/style.css", :rel => "stylesheet", :media => "screen", :type => "text/css" }/
     %link{ :href => "/css/spacecadet.css", :rel => "stylesheet", :media => "screen", :type => "text/css" }/
+    %style{:type => 'text/css'}
+      :sass
+        ol li
+          :line-height 90%
     = Plugins::Views.head
   %body
     #wrapper
@@ -24,8 +28,6 @@
           %p= Blog.subtitle
       #menu
         %ul
-          - Post.elements(:tags).each do |tag|
-            %li= tag
           = Plugins::Views.menu
       #page
         #content
