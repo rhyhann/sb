@@ -12,3 +12,5 @@
 
 # The code that will render your posts (by default, maruku with erb)
 :parsing_code: :maruku 
+:post:
+  :path: "/post/<%= post.slug %>"

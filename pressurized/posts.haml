@@ -1,15 +1,13 @@
-- if defined?(@posts)
-  - for post in @posts
-    %h1= link_slug(post.name, post.slug)
-    %p=  post.content
-    = Plugins::Views.posts_element_foot
-  = Plugins::Views.posts_foot
-- else
-  %p An alone post!
-  %h1= @post.name
-  %p=  @post.content
-  = Plugins::Views.post_foot
-  %p.meta
-    - @post.tags.each do |tag|
-      %span.tag= tag
-    = Plugins::Views.post_meta
+.post
+  - if defined?(@posts)
+    - for post in @posts
+      %h2.title= link_for(post)
+      .entry=  post.content
+      = Plugins::Views.post_foot
+    = Plugins::Views.posts_foot
+  - else
+    %h2.title= @post.name
+    .entry=  @post.content
+    = Plugins::Views.post_foot
+    %p.meta
+      = Plugins::Views.post_meta(@post)

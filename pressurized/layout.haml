@@ -28,7 +28,8 @@
           %p= Blog.subtitle
       #menu
         %ul
-          = Plugins::Views.menu
+          - Plugins::Views.menu.each do |category|
+            %li= category
       #page
         #content
           = yield

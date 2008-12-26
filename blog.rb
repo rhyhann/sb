@@ -1,8 +1,7 @@
-$:.unshift File.dirname(__FILE__) + '/sinatra/lib'
 # Generations
 %w(
-   sinatra  rubygems dm-core
-            dm-aggregates
+   rubygems dm-core
+   sinatra  dm-aggregates
    yaml     dm-is-paginated
    ostruct  dm-types
             dm-tags
@@ -11,23 +10,35 @@ $:.unshift File.dirname(__FILE__) + '/sinatra/lib'
 
 configure do
   DataMapper.setup(:default, "sqlite3:///#{Dir.pwd}/db.sqlite3")
-  Blog = OpenStruct.new YAML.load_file 'config.yml'
+  ( # Blog constant definition
+    # First, we search for the blog hash
+    bh = YAML.load_file 'config.yml'
+    # We chage its childs to openstruct
+    bh.each do |k,v|
+      bh[k] = v.is_a?(Hash) ? OpenStruct.new(v) :
+                              v
+    end
+    Blog = OpenStruct.new bh
+  ) unless defined? Blog
   DataMapper.auto_upgrade!
   set :views  => "#{Dir.pwd}/#{Blog.theme}",
       :public => "#{Dir.pwd}/#{Blog.theme}/public"
   # Plugins
   module Plugins
-    Views = OpenStruct.new
-    @@added_strings = []
-    def self.Views_add(type,string)
-      unless @@added_strings.include?(string)
-	eval "Views.#{type} = '' if Views.#{type}.nil?"
-        eval "Views.#{type} << string"
-        @@added_strings << string
-      end
-    end
     def self.activate(type)
       Dir.glob("plugins/**/*." + type + ".rb").each {|l| load(l)}
+    end
+    module Views
+      @@l = {}
+      def self.[](wanted)
+        @@l[wanted] = @@l[wanted].nil? ? ::Array.new : @@l[wanted]
+      end
+      def self.[]=(wanted, to)
+        @@l[wanted] = self[wanted]; @@l[wanted] = to.to_a
+      end
+      def self.method_missing(method, *parameters)
+        self[method]
+      end
     end
   end
 end
@@ -38,19 +49,23 @@ class Post
   property :id     ,Serial
   property :name   ,String,:nullable => false,:unique => true,:key => true
   property :content,Text  ,:nullable => false
-  property :slug      ,Slug
+  property :slug   ,Slug
   is_paginated
   before :save do
     attribute_set(:slug, @name)
   end
 end
-
 # Methods
 def load_posts(page = 1, type = nil, tag = nil)
-  @posts = type.nil? ? Post.all : Post.all(type.to_sym.like => "%#{tag}%")
+  type = type.to_s.plural
+  @posts = type.empty? ? Post.all : Post.all(type.to_sym.like => "%#{Post.slug_for(type)[tag]}%")
   @posts_count, @posts = @posts.paginated :page     => (page.empty? ? 1 : page.to_i),
-					  :per_page => Blog.per_page
+                                          :per_page => Blog.per_page
 end
+# This simple function changes the url like that:
+# 1. Appends a / in the end (if not)
+# 2. Appends a 1 in the end (if not)
+# Otherwise, a simple 404 error (TODO)
 not_found do
   redirect "#{request.env['PATH_INFO']}/" if request.env['PATH_INFO'][-1] != 47
   redirect "#{request.env['PATH_INFO']}1" if request.env['PATH_INFO'][-1] == 47
@@ -76,13 +91,15 @@ end
 helpers do
   # Alias for link_to(foo, "/#{Blog.post_prefix}/bar"), intended 
   # to automatically make the post link
-  def link_slug(*args)
-    args[1] = "#{Blog.post_prefix.to_s}/#{args[1]}"
-    link_to(*args)
+  def link_for(post)
+    #args[1] = "/#{Blog.post_prefix.to_s}/#{args[1]}"
+    # TODO: make it work
+    p Blog.post.path
+    link_to(post.name, "/#{Blog.post_prefix}/#{erb("/post/<%= post.slug %>")}")
   end
   # Generates a link from the name and the given url
   def link_to(name, url, options = {})
-    "<a href='#{url}' #{attrs(options)}>#{name}</a>"
+    "<a href='http://eo:4567#{url}' #{attrs(options)}>#{name}</a>"
   end
   # Changes the given hash to xml attributes
   # and their values like #=> key=''
