@@ -11,6 +11,10 @@
 # Eval code that you will write as Ruby
 
 # The code that will render your posts (by default, maruku with erb)
-:parsing_code: :maruku 
+:parse:
+  :pre:
+    - maruku
+  :post:
+    - pages
 :post:
-  :path: "/post/<%= post.slug %>"
+  :path: "/post/%SLUG%"

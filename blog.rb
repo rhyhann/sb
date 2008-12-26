@@ -92,10 +92,9 @@ helpers do
   # Alias for link_to(foo, "/#{Blog.post_prefix}/bar"), intended 
   # to automatically make the post link
   def link_for(post)
-    #args[1] = "/#{Blog.post_prefix.to_s}/#{args[1]}"
-    # TODO: make it work
-    p Blog.post.path
-    link_to(post.name, "/#{Blog.post_prefix}/#{erb("/post/<%= post.slug %>")}")
+    # TODO: test
+    path = Blog.post.path.gsub('%SLUG%', post.slug)
+    link_to(post.name, path)
   end
   # Generates a link from the name and the given url
   def link_to(name, url, options = {})

@@ -1,7 +1,7 @@
 require 'blog.rb'
 disable :run
 Parsers = OpenStruct.new
-Dir.glob('plugins/**/*.parser.rb').each {|r| require(r)} 
+Plugins.activate 'parser'
 # Model
 class Post
   public
@@ -10,10 +10,10 @@ class Post
   # of the two arguments (Ostruct), updates the tag and the
   # category list (with the same Struct) and saves it
   def parse(variables)
-    variables.content = if variables.filter
-      variables.filter.each {|f| eval(Parsers.send(f))}
+    if variables.filter
+      variables.filter.each {|f| variables.content = eval(Parsers.send(f))}
     else
-      eval Parsers.send(Blog.parsing_code)
+      Blog.parse.pre.each {|u| variables.content = eval(Parsers.send(u)) }
     end
     maybe = self.update_attributes :name    => variables.name,
                                    :content => variables.content
@@ -21,6 +21,7 @@ class Post
     record.tags      = variables.tags
     record.categories = variables.categories
     record.save
+    Blog.parse.post.each {|u| eval(Parsers.send(u))}
     return record
   end
 end
@@ -48,6 +49,7 @@ module PostUpdater
       o.content = treat(file)
       return o
     end
+    private
     # This function removes the annoying text from the
     # file to show the content only
     # api:: *private*

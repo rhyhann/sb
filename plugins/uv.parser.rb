@@ -6,6 +6,9 @@ MaRuKu::Globals[:html_math_engine] = 'itex2mml'
 OpenCode = /^[a-zA-Z]*\-\-+/
 CloseCode = /^\+\-\-[a-zA-Z]*/
 
+# A bug makes it impossible to
+# edit after if the next line after it is empty
+# TODO TODO
 MaRuKu::In::Markdown::register_block_extension(
   :regexp  => OpenCode,
   :handler => lambda do |doc, thing, context|
